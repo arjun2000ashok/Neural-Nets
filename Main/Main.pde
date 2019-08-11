@@ -1,8 +1,8 @@
-Point[] points = new Point[100];
+Point[] points = new Point[1000];
 Perceptron brain;
 int tI = 0;
 void setup(){
-  size(600,600);
+  size(1200,500);
   
   for(int i=0;i<points.length;i++){
      points[i] = new Point(); 
@@ -38,7 +38,10 @@ void draw(){
    Point training = points[tI];
    float[] inputs = {training.x,training.y};
    brain.train(inputs,training.label);
-   
+   tI++;
+   if(tI >= points.length){
+    tI = 0; 
+   }
    
 }
 
