@@ -1,5 +1,5 @@
 float f(float x){
-   return 3*x + 2; 
+   return x ; 
 }
 
 

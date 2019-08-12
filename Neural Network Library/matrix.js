@@ -15,7 +15,7 @@ class Matrix{
   randomize() {
     for (var i = 0; i < this.rows; i++) {
       for (var j = 0; j < this.cols; j++) {
-        this.data[i][j] = Math.floor(Math.random() * 10);
+        this.data[i][j] = Math.random() * 2 - 1;
       }
     }
   }
@@ -55,24 +55,24 @@ class Matrix{
     }
     return result;
   }
-  
-  // This adds another data or a single value
-  static add(a,other) {
-    var result = new Matrix(a.rows,a.cols);
-    for (var i = 0; i < this.rows; i++) {
-      for (var j = 0; j < this.cols; j++) {
-        result.data[i][j] = a.data[i][j] + other.data[i][j];
-      }
-    }
-  
-  }
 
   add(other){
-    for (var i = 0; i < this.rows; i++) {
-      for (var j = 0; j < this.cols; j++) {
-        this.data[i][j] += other;
+
+    if(other instanceof Matrix){
+      for (var i = 0; i < this.rows; i++) {
+        for (var j = 0; j < this.cols; j++) {
+          this.data[i][j] += other.data[i][j];
+        }
       }
     }
+    else{
+      for (var i = 0; i < this.rows; i++) {
+        for (var j = 0; j < this.cols; j++) {
+          this.data[i][j] += other;
+        }
+      }
+    }
+    
   }
 
   
@@ -147,6 +147,16 @@ class Matrix{
       m.data[i][0] = array[i];
     }
     return m;
+  }
+
+
+  map(func){
+    for(var i = 0;i<this.rows;i++){
+      for(var j=0;j<this.cols;j++){
+        var value = this.data[i][j];
+        this.data[i][j] = func(value);
+      }
+    }
   }
 
 }
