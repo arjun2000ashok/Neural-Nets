@@ -159,4 +159,8 @@ class Matrix{
     }
   }
 
+  print(){
+    console.table(this.data);
+  }
+
 }

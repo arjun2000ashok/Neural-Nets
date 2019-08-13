@@ -36,4 +36,22 @@ class NeuralNetwork{
     }
 
 
+    train(inputs,targets){
+        var guess = this.feedForward(inputs);
+        targets = Matrix.fromArray(targets);
+        guess = Matrix.fromArray(guess);
+        let outputErrors = Matrix.subtract(targets,guess);
+        
+        //Designed for one hidden layer
+        let hiddenErrors = Matrix.multiply(Matrix.transpose(this.weights_ho),outputErrors);
+        
+        //Gradient Descent left
+
+        //Adjust weights_ho based on outputErrors (and the hiddenValues)
+        //Adjust weights_ih based on hiddenErrors (and the inputValues)
+
+        
+    }
+
+
 }

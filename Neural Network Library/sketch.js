@@ -1,4 +1,6 @@
-var nn = new NeuralNetwork(3,1,1);
-var inputs = [0,1,3];
-let output = nn.feedForward(inputs);
-console.log(output);
+var nn = new NeuralNetwork(2,1,2);
+var inputs = [1,0];
+var targets = [1,0];
+
+nn.train(inputs,targets);
+
