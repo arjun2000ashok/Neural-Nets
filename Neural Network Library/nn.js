@@ -37,11 +37,11 @@ class NeuralNetwork{
     }
 
 
-    train(inputArray,targets){
+    train(inputArray,targetArray){
 
 
 
-        targets = Matrix.fromArray(targets);
+        let targets = Matrix.fromArray(targetArray);
 
 
         
@@ -54,7 +54,7 @@ class NeuralNetwork{
         hidden.map(sigmoid);
             
 
-        let outputs = Matrix.multiply(this.weights_ho,hiddenValues);
+        let outputs = Matrix.multiply(this.weights_ho,hidden);
         outputs.add(this.bias_o);
         outputs.map(sigmoid);
 
@@ -123,6 +123,9 @@ class NeuralNetwork{
 
         /*----------------------------END OF BACK PROPAGATION ALGORITHM : ADJUSTING THE WEIGHTS BETWEEN INPUT AND HIDDEN LAYERS--------------------------*/
         
+
+        
+
         
     }
 
