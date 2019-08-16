@@ -8,7 +8,8 @@ class NeuralNetwork{
         this.input_nodes = input_nodes;
         this.hidden_nodes = hidden_nodes;
         this.output_nodes = output_nodes;
-    
+        this.learning_rate = 0.1;
+
         this.weights_ih = new Matrix(this.hidden_nodes,this.input_nodes);
         this.weights_ho = new Matrix(this.output_nodes,this.hidden_nodes);
         this.weights_ih.randomize();
@@ -21,31 +22,47 @@ class NeuralNetwork{
     }
 
     feedForward(inputArray){
-        let inputMatrix = Matrix.fromArray(inputArray);        
-        let hiddenValues = Matrix.multiply(this.weights_ih,inputMatrix);
+        let inputs = Matrix.fromArray(inputArray);        
+        let hidden = Matrix.multiply(this.weights_ih,inputs);
         // console.table(hiddenValues.data);
-        hiddenValues.add(this.bias_h);
+        hidden.add(this.bias_h);
         // console.table(hidden.data);
-        hiddenValues.map(sigmoid);
+        hidden.map(sigmoid);
             
 
-        let outputMatrix = Matrix.multiply(this.weights_ho,hiddenValues);
-        outputMatrix.add(this.bias_o);
-        outputMatrix.map(sigmoid);
+        let outputs = Matrix.multiply(this.weights_ho,hiddenValues);
+        outputs.add(this.bias_o);
+        outputs.map(sigmoid);
         return outputMatrix.toArray();
     }
 
 
-    train(inputs,targets){
-        var guess = this.feedForward(inputs);
+    train(inputArray,targets){
+
+
+
         targets = Matrix.fromArray(targets);
-        guess = Matrix.fromArray(guess);
-        let outputErrors = Matrix.subtract(targets,guess);
+
+
         
-        //Designed for one hidden layer
-        let hiddenErrors = Matrix.multiply(Matrix.transpose(this.weights_ho),outputErrors);
-        
-        //EXPLANATION FOR THE ABOVE STEP:
+        /*----------------------------FEED FORWARD ALGORITHM--------------------------*/
+        let inputs = Matrix.fromArray(inputArray);        
+        let hidden = Matrix.multiply(this.weights_ih,inputs);
+        // console.table(hiddenValues.data);
+        hidden.add(this.bias_h);
+        // console.table(hidden.data);
+        hidden.map(sigmoid);
+            
+
+        let outputs = Matrix.multiply(this.weights_ho,hiddenValues);
+        outputs.add(this.bias_o);
+        outputs.map(sigmoid);
+
+
+        /*----------------------------END OF FEED FORWARD ALGORITHM--------------------------*/
+
+
+        /*----------------------------BACK PROPAGATION ALGORITHM--------------------------*/
 
         //REFER BOOK PAGE 83
         //The error of the first hidden node is sum o w11 * e1 and w12 * e2 (if it has 2 nodes)
@@ -58,6 +75,54 @@ class NeuralNetwork{
         //Adjust weights_ho based on outputErrors (and the hiddenValues)
         //Adjust weights_ih based on hiddenErrors (and the inputValues)
 
+
+        /*----------------------------BACK PROPAGATION ALGORITHM : ADJUSTING THE WEIGHTS BETWEEN HIDDEN AND OUTPUT LAYERS--------------------------*/
+
+        
+        let outputErrors = Matrix.subtract(targets,outputs);
+
+        let derivativeOfOutputMatrix = Matrix.copy(outputs);
+        derivativeOfOutputMatrix.map((x) => {return x * (1 - x)});
+        derivativeOfOutputMatrix.multiply(outputErrors); //does element*element multiplication
+        derivativeOfOutputMatrix.multiply(this.learning_rate); //does scalar multiplication
+
+        //now perform a row-column multiplication of the derivativeOfOutputMatrix with the TRANSPOSE OF hidden values
+
+        let deltaW_ho = Matrix.multiply(derivativeOfOutputMatrix,Matrix.transpose(hidden));
+
+        this.weights_ho.add(deltaW_ho);
+
+
+
+        /*----------------------------END OF BACK PROPAGATION ALGORITHM : ADJUSTING THE WEIGHTS BETWEEN HIDDEN AND OUTPUT LAYERS--------------------------*/
+
+
+
+
+
+
+        /*----------------------------BACK PROPAGATION ALGORITHM : ADJUSTING THE WEIGHTS BETWEEN INPUT AND HIDDEN LAYERS--------------------------*/
+
+
+
+        let hiddenErrors = Matrix.multiply(Matrix.transpose(this.weights_ho),outputErrors);
+
+
+        let derivativeOfHiddenMatrix = Matrix.copy(hidden);
+        derivativeOfHiddenMatrix.map((x) => {return x * (1 - x)});
+        derivativeOfHiddenMatrix.multiply(hiddenErrors); //does element*element multiplication
+        derivativeOfHiddenMatrix.multiply(this.learning_rate); //does scalar multiplication
+
+        //now perform a row-column multiplication of the derivativeOfHiddenMatrix with the TRANSPOSE OF input values
+
+        let deltaW_ih = Matrix.multiply(derivativeOfHiddenMatrix,Matrix.transpose(inputs));
+
+        this.weights_ih.add(deltaW_ih);
+
+
+
+        /*----------------------------END OF BACK PROPAGATION ALGORITHM : ADJUSTING THE WEIGHTS BETWEEN INPUT AND HIDDEN LAYERS--------------------------*/
+        
         
     }
 
