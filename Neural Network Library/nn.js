@@ -92,6 +92,7 @@ class NeuralNetwork{
 
         this.weights_ho.add(deltaW_ho);
 
+        this.bias_o.add(derivativeOfOutputMatrix); //as the input of the BIAS IS 1 ALWAYS
 
 
         /*----------------------------END OF BACK PROPAGATION ALGORITHM : ADJUSTING THE WEIGHTS BETWEEN HIDDEN AND OUTPUT LAYERS--------------------------*/
@@ -118,6 +119,8 @@ class NeuralNetwork{
         let deltaW_ih = Matrix.multiply(derivativeOfHiddenMatrix,Matrix.transpose(inputs));
 
         this.weights_ih.add(deltaW_ih);
+
+        this.bias_h.add(derivativeOfHiddenMatrix); //as the input of the BIAS IS 1 ALWAYS
 
 
 
