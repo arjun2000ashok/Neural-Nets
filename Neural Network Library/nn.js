@@ -45,6 +45,14 @@ class NeuralNetwork{
         //Designed for one hidden layer
         let hiddenErrors = Matrix.multiply(Matrix.transpose(this.weights_ho),outputErrors);
         
+        //EXPLANATION FOR THE ABOVE STEP:
+
+        //REFER BOOK PAGE 83
+        //The error of the first hidden node is sum o w11 * e1 and w12 * e2 (if it has 2 nodes)
+        //This is done by transposing the matrix first and then multiplying as the matrix is in the order ij where i = outputNodeNumber and j = hiddenNodeNumber
+
+
+
         //Gradient Descent left
 
         //Adjust weights_ho based on outputErrors (and the hiddenValues)
