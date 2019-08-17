@@ -30,10 +30,10 @@ class NeuralNetwork{
         hidden.map(sigmoid);
             
 
-        let outputs = Matrix.multiply(this.weights_ho,hiddenValues);
+        let outputs = Matrix.multiply(this.weights_ho,hidden);
         outputs.add(this.bias_o);
         outputs.map(sigmoid);
-        return outputMatrix.toArray();
+        return outputs.toArray();
     }
 
 
@@ -48,9 +48,7 @@ class NeuralNetwork{
         /*----------------------------FEED FORWARD ALGORITHM--------------------------*/
         let inputs = Matrix.fromArray(inputArray);        
         let hidden = Matrix.multiply(this.weights_ih,inputs);
-        // console.table(hiddenValues.data);
         hidden.add(this.bias_h);
-        // console.table(hidden.data);
         hidden.map(sigmoid);
             
 
@@ -125,11 +123,6 @@ class NeuralNetwork{
 
 
         /*----------------------------END OF BACK PROPAGATION ALGORITHM : ADJUSTING THE WEIGHTS BETWEEN INPUT AND HIDDEN LAYERS--------------------------*/
-        
-
-        
-
-        
     }
 
 
